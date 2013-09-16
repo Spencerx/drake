@@ -3,6 +3,10 @@
   :url "https://github.com/Factual/drake"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
+  :repositories [["soundcloud-snapshots" "http://maven.int.s-cloud.net/content/repositories/snapshots/"]
+                 ["soundcloud-releases"  "http://maven.int.s-cloud.net/content/repositories/releases/"]
+                 ["soundcloud-proxy-snapshots"  "http://maven.int.s-cloud.net/content/groups/proxy_snapshots/"]
+                 ["soundcloud-proxy-releases"   "http://maven.int.s-cloud.net/content/groups/proxy_releases/"]]
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [org.clojure/tools.logging "0.2.3"]
                  [clj-logging-config "1.9.6"]
@@ -17,7 +21,7 @@
                  ;; for HDFS support
                  [hdfs-clj "0.1.0"]
                  ;; you may need to change this to be compatible with your cluster
-                 [org.apache.hadoop/hadoop-core "0.20.2"]]
+                 [org.apache.hadoop/hadoop-client "2.0.0-mr1-cdh4.3.0"]]
   :test-selectors {:regression   :regression
                    :default      (complement :regression)
                    :all          (constantly true)}
