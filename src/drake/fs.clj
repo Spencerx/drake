@@ -139,9 +139,29 @@
       conf-file
       (throw+ {:msg (format "Hadoop configuration file %s doesn't exist" conf-file)}))))
 
+(defn get-hdfs-conf-file-or-fail
+  "Returns the full path to hdfs-config as a File, or throws an Exception indicating a
+   problem finding the file.
+
+   Prefers the HADOOP_HOME environment variable to indicate Hadoop's home directory for
+   configuration, in which case the file [HADOOP_HOME]/conf/hdfs-site.xml is verified
+   for existance. If it exists, it's returned as a File. Otherwise an error is thrown.
+
+   If there is no HADOOP_HOME defined, the file /etc/hadoop/conf/hdfs-site.xml is
+   expected to exist. If it exists, it's returned as a File. Otherwise an error is thrown."
+  []
+  (let [hadoop-home (get (System/getenv) "HADOOP_HOME")
+        conf-file (if hadoop-home
+                    (fs/file hadoop-home "conf/hdfs-site.xml")
+                    (fs/file "/etc/hadoop/conf/hdfs-site.xml"))]
+    (if (fs/exists? conf-file)
+      conf-file
+      (throw+ {:msg (format "Hadoop configuration file %s doesn't exist" conf-file)}))))
+
 (def ^:private hdfs-configuration
   (memoize #(doto (Configuration.)
-              (.addResource (Path. (str (get-hadoop-conf-file-or-fail)))))))
+              (.addResource (Path. (str (get-hadoop-conf-file-or-fail))))
+              (.addResource (Path. (str (get-hdfs-conf-file-or-fail)))))))
 
 (defn- remove-hdfs-prefix
   "Removes the prefix HDFS libraries may insert."
