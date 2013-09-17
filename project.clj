@@ -23,6 +23,7 @@
                  [hdfs-clj "0.1.0"]
                  ;; you may need to change this to be compatible with your cluster
                  [org.apache.hadoop/hadoop-client "2.0.0-mr1-cdh4.3.0"]
+                 [org.apache.hadoop/hadoop-hdfs   "2.0.0-cdh4.3.0"]
                  ;; for AWS S3 support
                  [clj-aws-s3 "0.3.3"]]
   :test-selectors {:regression   :regression
